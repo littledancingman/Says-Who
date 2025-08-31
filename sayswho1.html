@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Says Who?</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #fff;
+      color: #333;
+      text-align: center;
+      padding: 2em 1em;
+      box-sizing: border-box;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+
+    input, button {
+      font-size: 1.2em;
+      margin: 0.5em 0;
+      padding: 0.8em;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    input {
+      width: 90%;
+      max-width: 400px;
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      min-width: 120px;
+      margin: 0.5em 0.2em;
+      display: inline-block;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      background: #3399ff;
+      transform: scale(1.05);
+    }
+
+    #list-display {
+      margin-top: 1em;
+      font-size: 1.3em;
+      min-height: 2em;
+    }
+
+    #confirmation {
+      margin-top: 0.5em;
+      color: green;
+      font-weight: bold;
+      min-height: 1.5em;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    @media (max-width: 480px) {
+      input, button {
+        width: 90%;
+        font-size: 1.3em;
+        padding: 1em;
+      }
+      #list-display { font-size: 1.5em; }
+      #confirmation { font-size: 1.4em; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Says Who?</h1>
+
+  <input type="text" id="entry" placeholder="Enter your item">
+  <br>
+  <button id="add-btn">Add Item</button>
+  <button id="show-btn">Show Full List</button>
+  <button id="reset-btn">Reset Game</button>
+
+  <div id="confirmation"></div>
+  <div id="list-display"></div>
+
+  <script>
+    const entryInput = document.getElementById('entry');
+    const addBtn = document.getElementById('add-btn');
+    const showBtn = document.getElementById('show-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const listDisplay = document.getElementById('list-display');
+    const confirmation = document.getElementById('confirmation');
+
+    const entries = [];
+
+    addBtn.addEventListener('click', () => {
+      const value = entryInput.value.trim();
+      if (value !== '') {
+        entries.push(value);
+        entryInput.value = '';
+        entryInput.focus();
+
+        // Show temporary confirmation message
+        confirmation.textContent = 'Entry added!';
+        confirmation.style.opacity = '1';
+        setTimeout(() => {
+          confirmation.style.opacity = '0';
+        }, 1500);
+      }
+    });
+
+    showBtn.addEventListener('click', () => {
+      if (entries.length === 0) {
+        listDisplay.textContent = 'No entries yet.';
+        return;
+      }
+      const shuffled = [...entries].sort(() => Math.random() - 0.5);
+      listDisplay.innerHTML = shuffled.join('<br>'); // No numbering
+    });
+
+    resetBtn.addEventListener('click', () => {
+      entries.length = 0;
+      listDisplay.textContent = '';
+      entryInput.value = '';
+      entryInput.focus();
+      confirmation.textContent = '';
+    });
+  </script>
+</body>
+</html>
